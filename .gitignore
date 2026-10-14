@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Private local documents and credentials: never commit or publish.
+.private/
+.env
+.env.*
+*.pdf
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -4,7 +4,7 @@ A personal portfolio built with React, TypeScript, and Vite, based on a custom p
 
 ## Current status
 
-The layout is implemented with placeholder content for the role, introduction, photo, project details, biography, contact links, and résumé. Project cards and the résumé button currently open “Coming soon” dialogs.
+The portfolio includes a hardware/software headline, an About section, and LinkedIn and GitHub contact links. The photo and project details remain placeholders; project cards open “Coming soon” dialogs. The résumé opens only in the local development server and is available on request in production builds.
 
 ### Features
 
@@ -46,14 +46,22 @@ The preview command prints its own local URL. It is intended for checking the bu
 
 ## Customize the portfolio
 
-- **Content and interactions:** Edit `src/App.tsx` to replace placeholder text, update the `projects` array, add your portrait, and connect project and résumé links.
+- **Content and interactions:** Edit `src/App.tsx` to update text, the `projects` array, your portrait, and public profile links.
 - **Layout:** Edit `src/App.css` for section layouts, responsive breakpoints, and component styles.
 - **Theme:** Edit `src/index.css` for colors, fonts, and global styles.
 - **Images:** Add imported artwork and photos to `src/assets/`.
-- **Static files:** Place files that need a stable public URL, such as a résumé PDF, in `public/`, then link to them from the page.
+- **Static files:** Place only files intended for public distribution in `public/`. Do not put the private résumé here.
 - **Page metadata:** Update the title and description in `index.html`. The portfolio favicon is `public/rv-favicon.svg`.
 
 Files included in the website, including anything in `public/`, are accessible to visitors after deployment. Only include information you intend to publish.
+
+## Private résumé
+
+Keep the local résumé at `.private/resume.pdf`. This directory and PDF files are ignored by Git. Do not force-add private files.
+
+During `bun run dev`, the Résumé link opens the PDF through a dedicated local endpoint. The endpoint accepts only loopback requests with a local hostname and rejects cross-origin requests. Vite's ordinary file-serving routes are blocked from reading `.private/`.
+
+The PDF is not imported by the app, copied to `dist/`, or served by the production preview. Production visitors see a message directing them to LinkedIn to request a résumé. A fresh clone will not contain the document; supply your own local copy to enable the development link.
 
 ## Project structure
 

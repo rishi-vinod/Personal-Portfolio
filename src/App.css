@@ -50,6 +50,9 @@ h1 > span { display: block; }
 .secondary-section { border-top: 1px solid #41413e; padding-block: 74px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; }
 .secondary-section h2 { font: 650 clamp(30px, 3.5vw, 64px)/1.2 var(--sans); letter-spacing: -.04em; }
 .secondary-section p:not(.eyebrow) { color: var(--muted); line-height: 1.8; margin-top: 18px; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 20px 32px; margin-top: 26px; }
+.contact-links a { padding-block: 8px; }
+.contact-links svg { width: 23px; height: 23px; flex-shrink: 0; fill: currentColor; }
 footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #41413e; min-height: 90px; font-size: 13px; }
 footer > span { text-transform: uppercase; letter-spacing: .12em; }
 dialog { color: var(--cream); background: #191919; border: 1px solid var(--line); width: min(520px, calc(100% - 40px)); padding: 30px; }

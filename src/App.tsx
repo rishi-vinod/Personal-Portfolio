@@ -46,18 +46,21 @@ function App() {
             </a>
           ))}
         </nav>
-        <button className="resume-link text-link" onClick={() => setDetail({
-          title: 'Résumé', description: 'Your résumé will be available here. Add your résumé PDF when you’re ready.',
-        })}>Résumé <span aria-hidden="true">↗</span></button>
+        {import.meta.env.DEV ? (
+          <a className="resume-link text-link" href="/__local-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>
+        ) : (
+          <button className="resume-link text-link" onClick={() => setDetail({
+            title: 'Résumé', description: 'My résumé is available on request. Get in touch through LinkedIn in the Contact section.',
+          })}>Résumé <span aria-hidden="true">↗</span></button>
+        )}
       </header>
 
       <main>
         <section id="home" className="hero page-width" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <p className="eyebrow">Place your role here</p>
+            <p className="eyebrow">Hardware &amp; software</p>
             <h1 id="hero-title" aria-label="Rishi Vinod"><span>Rishi</span><span>Vinod<span className="name-period">.</span></span></h1>
-            <h2 className="hero-tagline">Place one-liner here</h2>
-            <p className="hero-description">Place a short introduction here.</p>
+            <h2 className="hero-tagline">Student experimenting at the intersection of hardware and software.</h2>
             <div className="hero-actions">
               <a className="primary-link" href="#projects">Explore projects <span aria-hidden="true">↗</span></a>
               <a className="text-link" href="#about">About me <span aria-hidden="true">→</span></a>
@@ -93,18 +96,34 @@ function App() {
 
         <section id="about" className="secondary-section page-width" aria-labelledby="about-title">
           <p className="eyebrow">02 / About me</p>
-          <div><h2 id="about-title">A little about me<span className="accent">.</span></h2><p>Place your bio, background, and interests here.</p></div>
+          <div>
+            <h2 id="about-title">A little about me<span className="accent">.</span></h2>
+            <p>I like understanding what happens between the code I write and the hardware running it. The 1s and 0s on my laptop represent physical states in circuits, with transistors acting as tiny switches. I’m interested in how those simple pieces work together to run a program and put something on a screen.</p>
+            <p>That’s why I enjoy working with both hardware and software. Writing the code is one part; figuring out what it makes the hardware do is the part that keeps me curious.</p>
+          </div>
         </section>
         <section id="contact" className="secondary-section page-width" aria-labelledby="contact-title">
           <p className="eyebrow">03 / Contact</p>
-          <div><h2 id="contact-title">Let’s connect<span className="accent">.</span></h2><p>Place your email and social links here.</p></div>
+          <div>
+            <h2 id="contact-title">Let’s connect<span className="accent">.</span></h2>
+            <div className="contact-links">
+              <a className="text-link" href="https://www.linkedin.com/in/rishi-vinod/" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8V14.1c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.73H9.51V9.2h2.83v1.3h.04c.39-.74 1.36-1.52 2.79-1.52 2.98 0 3.58 1.96 3.58 4.5v5.27Z" /></svg>
+                LinkedIn <span aria-hidden="true">↗</span>
+              </a>
+              <a className="text-link" href="https://github.com/rishi-vinod" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.09 1.15a10.75 10.75 0 0 1 5.62 0c2.15-1.46 3.1-1.15 3.1-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.63 5.28-5.14 5.56.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z" /></svg>
+                GitHub <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
         </section>
       </main>
 
       <footer className="page-width"><span>Rishi Vinod</span><a className="text-link" href="#home">Back to top <span aria-hidden="true">↑</span></a></footer>
 
       <dialog ref={dialogRef} onClose={() => setDetail(null)} aria-labelledby="detail-title" aria-describedby="detail-description">
-        <div className="dialog-header"><span className="eyebrow">Coming soon</span><form method="dialog"><button className="close-button" aria-label="Close dialog">×</button></form></div>
+        <div className="dialog-header"><span className="eyebrow">{detail?.title === 'Résumé' ? 'Available on request' : 'Coming soon'}</span><form method="dialog"><button className="close-button" aria-label="Close dialog">×</button></form></div>
         <h2 id="detail-title">{detail?.title}</h2><p id="detail-description">{detail?.description}</p>
         <form method="dialog"><button className="primary-link dialog-done">Got it <span aria-hidden="true">→</span></button></form>
       </dialog>
