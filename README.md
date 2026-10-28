@@ -13,9 +13,8 @@ The portfolio includes a hardware/software headline, an About section, and Linke
 - Two selected-project cards with artwork from the design reference.
 - Active navigation indicators, keyboard focus styles, and a skip-to-content link.
 - Reduced-motion support and native dialogs.
-- Spotify now playing and three favorite tracks, with server-side authorization.
 - Three recent public GitHub commits, linked to the original changes.
-- Floating charcoal activity panels on wide screens, inline panels on smaller screens.
+- A floating charcoal GitHub panel on wide screens, placed inline on smaller screens.
 - Hover/press feedback and optional tap vibration on supported browsers.
 
 ## Run locally
@@ -51,34 +50,19 @@ bun run test
 
 The preview command prints its own local URL. It is intended for checking the built site locally.
 
-## Spotify and GitHub activity
+## GitHub activity
 
-The activity cards sit between the introduction and selected projects on laptops and phones. At 1680px and wider they float in reserved side gutters, leaving the portfolio content unobstructed. Spotify sits on the left; GitHub sits a little lower on the right. The original charcoal, cream, and orange palette carries through the cards. Spotify's green is reserved for its identity and live indicator.
+The GitHub card sits between the introduction and selected projects on laptops and phones. At 1680px and wider it floats in a reserved right gutter, leaving the portfolio content unobstructed. The original charcoal, cream, and orange palette carries through the card.
 
-### Connect Spotify
-
-1. Copy `.env.example` to `.env.local` in the project root.
-2. Create an app in the [Spotify developer dashboard](https://developer.spotify.com/dashboard) and put its client ID and client secret in `.env.local`.
-3. Follow Spotify's [Authorization Code flow](https://developer.spotify.com/documentation/web-api/tutorials/code-flow) to authorize **your own account** with the scopes `user-read-currently-playing user-top-read`. Register the exact redirect URI used by that flow in your app settings. Put the returned refresh token in `SPOTIFY_REFRESH_TOKEN`.
-4. Restart `bun run dev`. Play a song and the panel will update on its next refresh (up to 30 seconds).
-
-Do not put these credentials in `src/`, use a `VITE_` prefix, or paste them into chat. `.env.local` is ignored by Git and blocked by Vite's file server. For deployment, configure the same values as server environment variables. Spotify's app/account eligibility and development-mode restrictions are managed in its developer dashboard.
-
-The server follows Spotify's [token refresh flow](https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens), [currently-playing endpoint](https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track), and [top-items endpoint](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks). “On repeat” displays three favorites from the short-term window (approximately four weeks). Track links open Spotify; this is a listening-status display, not a player or playback remote.
-
-Without credentials, the card says the soundtrack is coming. Paused playback, no current song, empty favorites, network errors, and loading each have their own state. Podcasts and local files are omitted. Polling pauses when the page is hidden. An upstream failure clears the live indicator instead of showing stale music as current.
-
-### GitHub
+No credentials or paid subscription are required. To change the profile, copy `.env.example` to `.env.local`, set `GITHUB_USERNAME`, and restart the server.
 
 `GITHUB_USERNAME` defaults to the portfolio's existing `rishi-vinod` profile. No token is needed or sent. The server uses GitHub's [commit search API](https://docs.github.com/en/rest/search/search#search-commits), sorted by committer date, to show three distinct public commits authored by that account. This includes contributions to others' repositories. Search indexing can lag behind a push. Private repositories and commit-body text are omitted; only the first message line is returned.
 
-### Endpoints and interactions
+### Endpoint and interactions
 
-- `GET /api/spotify/now-playing` — current track, paused/playing/idle state; cached for 15 seconds.
-- `GET /api/spotify/top-tracks` — three short-term favorites; cached for 10 minutes.
 - `GET /api/github/commits` — three public commits; cached for five minutes.
 
-All endpoints also support `HEAD`; other methods return 405. Upstream calls time out, simultaneous requests share in-flight work, and temporary failures return a sanitized 503 response cached for 30 seconds. Caches are per server process.
+The endpoint also supports `HEAD`; other methods return 405. Upstream calls time out, simultaneous requests share in-flight work, and temporary failures return a sanitized 503 response cached for 30 seconds. Caches are per server process.
 
 Hover lift, press compression, and arrow movement provide tactile visual feedback. Browsers cannot reliably provide physical haptics on hover. A “Tap feedback” toggle appears in the footer only where the Vibration API exists; actual vibration depends on the device/browser and occurs on clicks after opt-in. Reduced-motion preferences disable animation and vibration.
 
@@ -114,21 +98,21 @@ src/
 index.html          Page metadata and application entry
 vite.config.ts      Vite configuration
 server/             Activity API, production server, and endpoint tests
-.env.example        Credential template (actual values stay in .env.local)
+.env.example        Optional GitHub profile setting
 package.json        Dependencies and development commands
 bun.lock            Locked dependency versions
 ```
 
 ## Deployment
 
-`bun run build` generates the frontend in `dist/`. The live activity endpoints require a server; uploading `dist/` alone will leave the cards in their unavailable states. Use Node.js 24+ and run:
+`bun run build` generates the frontend in `dist/`. The live GitHub endpoint requires a server; uploading `dist/` alone will leave the card in its unavailable state. Use Node.js 24+ and run:
 
 ```sh
 bun run build
 bun run start
 ```
 
-The included server serves `dist/` and `/api/*` on `127.0.0.1:3000`. Set `PORT` as needed; set `HOST=0.0.0.0` in a container/hosting platform, with HTTPS handled by the hosting proxy. Deploy `server/` alongside `dist/` and the package manifest. The server has no additional runtime dependencies. Configure Spotify secrets in the host's environment. `bun run dev` and `bun run preview` use the same API handler through Vite middleware.
+The included server serves `dist/` and `/api/*` on `127.0.0.1:3000`. Set `PORT` as needed; set `HOST=0.0.0.0` in a container/hosting platform, with HTTPS handled by the hosting proxy. Deploy `server/` alongside `dist/` and the package manifest. The server has no additional runtime dependencies. `bun run dev` and `bun run preview` use the same API handler through Vite middleware.
 
 The production server serves only built files and activity endpoints. It never exposes the private résumé or environment files. Pushing source to GitHub alone does not publish the website; this repository does not currently include an automated deployment workflow.
 

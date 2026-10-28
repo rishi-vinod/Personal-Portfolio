@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import softwareArtwork from './assets/project-software.jpg'
 import hardwareArtwork from './assets/project-hardware.jpg'
 import './App.css'
-import { SpotifyPanel } from './components/SpotifyPanel'
 import { GitHubPanel } from './components/GitHubPanel'
 import { useHaptics } from './hooks/useHaptics'
 import './components/ActivityPanels.css'
@@ -81,7 +80,6 @@ function App() {
         </section>
 
         <div className="activity-panels page-width" aria-label="A little of my day">
-          <SpotifyPanel />
           <GitHubPanel />
         </div>
 

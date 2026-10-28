@@ -24,7 +24,7 @@ export function GitHubPanel() {
             <a className="tactile" href={commit.url} target="_blank" rel="noopener noreferrer">
               <span className="commit-node" aria-hidden="true" />
               <span className="commit-content"><span className="commit-repo" title={commit.repository}>{commit.repository.split('/').at(-1)}</span><strong>{commit.message}</strong><span className="commit-meta"><code>{commit.sha}</code><time dateTime={commit.date} title={new Date(commit.date).toLocaleString()}>{relativeDate(commit.date)}</time></span></span>
-              <span className="track-arrow" aria-hidden="true">↗</span>
+              <span className="activity-arrow" aria-hidden="true">↗</span>
             </a>
           </li>)}</ol> : <p className="activity-empty">Nothing public to show just yet.<span>More from the workbench soon.</span></p>}
         {data?.incomplete && <p className="activity-kicker">GitHub returned a partial feed.</p>}

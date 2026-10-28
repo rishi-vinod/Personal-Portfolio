@@ -3,13 +3,6 @@ import assert from 'node:assert/strict'
 import { createServer } from 'node:http'
 import { createActivityApi } from './activity.ts'
 
-const credentials = { SPOTIFY_CLIENT_ID: 'id', SPOTIFY_CLIENT_SECRET: 'secret', SPOTIFY_REFRESH_TOKEN: 'refresh' }
-const track = {
-  id: 'song', name: 'Test song', type: 'track', duration_ms: 180000,
-  artists: [{ name: 'Artist' }], album: { images: [{ url: 'https://i.scdn.co/art.jpg' }] },
-  external_urls: { spotify: 'https://open.spotify.com/track/song' },
-}
-
 async function withApi(env: Record<string, string>, upstream: typeof fetch, check: (url: string) => Promise<void>) {
   const api = createActivityApi(env, upstream)
   const server = createServer((req, res) => { void api(req, res, () => { res.writeHead(404); res.end() }) })
@@ -19,72 +12,6 @@ async function withApi(env: Record<string, string>, upstream: typeof fetch, chec
   try { await check(`http://127.0.0.1:${address.port}`) }
   finally { server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())) }
 }
-
-test('missing Spotify credentials produces a safe disconnected state without upstream calls', async () => {
-  await withApi({}, async () => { throw new Error('Must not fetch') }, async (url) => {
-    const response = await fetch(`${url}/api/spotify/now-playing`)
-    assert.equal(response.status, 200)
-    assert.deepEqual(await response.json(), { status: 'disconnected' })
-    assert.equal((await fetch(`${url}/api/spotify/top-tracks`, { method: 'POST' })).status, 405)
-  })
-})
-
-test('concurrent now-playing requests share authorization and cache; only track metadata is public', async () => {
-  let calls = 0
-  await withApi(credentials, async (input) => {
-    calls++
-    return String(input).includes('/api/token')
-      ? Response.json({ access_token: 'private-token', expires_in: 3600 })
-      : Response.json({ item: track, is_playing: true, progress_ms: 1200, device: { name: 'Private device' } })
-  }, async (url) => {
-    const responses = await Promise.all(Array.from({ length: 4 }, () => fetch(`${url}/api/spotify/now-playing`)))
-    const data = await responses[0].json() as { status: string; track: { title: string } }
-    assert.equal(data.status, 'playing')
-    assert.equal(data.track.title, 'Test song')
-    assert.doesNotMatch(JSON.stringify(data), /private-token|Private device|secret|refresh/)
-    assert.equal(calls, 2)
-  })
-})
-
-test('no playback, episodes, and local tracks are idle', async () => {
-  for (const item of [null, { ...track, type: 'episode' }, { ...track, is_local: true }]) {
-    await withApi(credentials, async (input) => String(input).includes('/api/token')
-      ? Response.json({ access_token: 'token', expires_in: 3600 })
-      : item ? Response.json({ item }) : new Response(null, { status: 204 }), async (url) => {
-      assert.deepEqual(await (await fetch(`${url}/api/spotify/now-playing`)).json(), { status: 'idle', track: null })
-    })
-  }
-})
-
-test('paused playback and top tracks preserve their own states', async () => {
-  await withApi(credentials, async (input) => {
-    if (String(input).includes('/api/token')) return Response.json({ access_token: 'token', expires_in: 3600 })
-    return Response.json(String(input).includes('/top/') ? { items: [track] } : { item: track, is_playing: false })
-  }, async (url) => {
-    const now = await (await fetch(`${url}/api/spotify/now-playing`)).json() as { status: string }
-    const top = await (await fetch(`${url}/api/spotify/top-tracks`)).json() as { tracks: unknown[] }
-    assert.equal(now.status, 'paused')
-    assert.equal(top.tracks.length, 1)
-  })
-})
-
-test('expired authorization refreshes once; provider errors are sanitized and cached', async () => {
-  let tokenCalls = 0
-  let playbackCalls = 0
-  await withApi(credentials, async (input) => {
-    if (String(input).includes('/api/token')) { tokenCalls++; return Response.json({ access_token: 'token', expires_in: 3600 }) }
-    playbackCalls++
-    return new Response('sensitive provider error', { status: playbackCalls === 1 ? 401 : 429 })
-  }, async (url) => {
-    for (let i = 0; i < 2; i++) {
-      const response = await fetch(`${url}/api/spotify/now-playing`)
-      assert.equal(response.status, 503)
-      assert.deepEqual(await response.json(), { status: 'unavailable' })
-    }
-    assert.equal(tokenCalls, 2)
-    assert.equal(playbackCalls, 2)
-  })
-})
 
 test('GitHub returns only public, deduplicated commits and never sends authorization', async () => {
   let calls = 0
@@ -108,6 +35,7 @@ test('GitHub returns only public, deduplicated commits and never sends authoriza
     const head = await fetch(`${url}/api/github/commits`, { method: 'HEAD' })
     assert.equal(head.status, 200)
     assert.equal(await head.text(), '')
+    assert.equal((await fetch(`${url}/api/github/commits`, { method: 'POST' })).status, 405)
   })
 })
 
