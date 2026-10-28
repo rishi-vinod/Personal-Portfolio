@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import softwareArtwork from './assets/project-software.jpg'
 import hardwareArtwork from './assets/project-hardware.jpg'
 import './App.css'
+import { SpotifyPanel } from './components/SpotifyPanel'
+import { GitHubPanel } from './components/GitHubPanel'
+import { useHaptics } from './hooks/useHaptics'
+import './components/ActivityPanels.css'
 
 const projects = [
   { name: 'Project 1', image: softwareArtwork, alt: 'Python, JavaScript, and Java illustrations from the portfolio sketch' },
@@ -10,6 +14,7 @@ const projects = [
 const navigation = ['Home', 'About', 'Projects', 'Contact'] as const
 
 function App() {
+  const haptics = useHaptics()
   const [activeSection, setActiveSection] = useState('home')
   const [detail, setDetail] = useState<{ title: string; description: string } | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -75,6 +80,11 @@ function App() {
           </div>
         </section>
 
+        <div className="activity-panels page-width" aria-label="A little of my day">
+          <SpotifyPanel />
+          <GitHubPanel />
+        </div>
+
         <section id="projects" className="projects-section" aria-labelledby="projects-title">
           <div className="page-width">
             <div className="section-heading">
@@ -120,7 +130,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="page-width"><span>Rishi Vinod</span><a className="text-link" href="#home">Back to top <span aria-hidden="true">↑</span></a></footer>
+      <footer className="page-width"><span>Rishi Vinod</span>{haptics.supported && <button className="haptics-toggle" aria-pressed={haptics.enabled} onClick={haptics.toggle}>Tap feedback {haptics.enabled ? 'on' : 'off'}</button>}<a className="text-link" href="#home">Back to top <span aria-hidden="true">↑</span></a></footer>
 
       <dialog ref={dialogRef} onClose={() => setDetail(null)} aria-labelledby="detail-title" aria-describedby="detail-description">
         <div className="dialog-header"><span className="eyebrow">{detail?.title === 'Résumé' ? 'Available on request' : 'Coming soon'}</span><form method="dialog"><button className="close-button" aria-label="Close dialog">×</button></form></div>

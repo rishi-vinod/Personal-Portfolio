@@ -32,9 +32,16 @@ a { color: inherit; text-decoration: none; }
 button { border: 0; background: none; }
 h1, h2, h3, p { margin: 0; }
 button, a { touch-action: manipulation; }
+button, a { transition: color .2s, transform .25s cubic-bezier(.2,.8,.2,1), background .2s; }
+button:active, .primary-link:active { transform: scale(.97); }
+.text-link > span, .brand .monogram { transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .text-link:hover > span { transform: translate(2px, -2px); }
+  .brand:hover .monogram { transform: rotate(-5deg) scale(1.05); }
+}
 :focus-visible { outline: 2px solid var(--orange); outline-offset: 7px; }
 ::selection { background: var(--orange); color: #101010; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition: none !important; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }

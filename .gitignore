@@ -16,6 +16,7 @@ dist-ssr
 .private/
 .env
 .env.*
+!.env.example
 *.pdf
 
 # Editor directories and files

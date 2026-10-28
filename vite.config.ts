@@ -1,9 +1,10 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
+import { createActivityApi } from './server/activity.ts'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   server: {
     host: '127.0.0.1',
     fs: {
@@ -15,6 +16,14 @@ export default defineConfig({
     },
   },
   plugins: [react(), {
+    name: 'activity-api',
+    configureServer(server) {
+      server.middlewares.use(createActivityApi({ ...loadEnv(mode, process.cwd(), ''), ...process.env }))
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(createActivityApi({ ...loadEnv(mode, process.cwd(), ''), ...process.env }))
+    },
+  }, {
     name: 'local-resume',
     apply: 'serve',
     configureServer(server) {
@@ -53,4 +62,4 @@ export default defineConfig({
       })
     },
   }],
-})
+}))
