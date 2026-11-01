@@ -37,7 +37,7 @@ export function TerminalMenu({ onNavigate }: { onNavigate: (screen: Screen) => v
       if (match >= 0) { event.preventDefault(); focusItem(group, match) }
     }
   }
-  return <nav className="database-menu" aria-label="Database commands">
+  return <><nav className="database-menu" aria-label="Database commands">
     {groups.map(({ label, items }, group) => <div className="command-group" key={label}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setOpen((value) => value === group ? null : value)
@@ -65,4 +65,11 @@ export function TerminalMenu({ onNavigate }: { onNavigate: (screen: Screen) => v
       </div>
     </div>)}
   </nav>
+    <section className="restricted-entry" aria-labelledby="restricted-heading">
+      <h2 id="restricted-heading">RESTRICTED ARCHIVE / TOP SECRET</h2>
+      <button onClick={() => onNavigate('FAILED_ACCESS')}>
+        <span>FAILED PROJECTS</span><span aria-hidden="true">[ ENTER ] -&gt;</span>
+      </button>
+    </section>
+  </>
 }

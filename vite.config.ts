@@ -1,9 +1,16 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
+import { contactEndpoint } from './src/lib/contactEndpoint.ts'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const configuredEndpoint = process.env.VITE_CONTACT_ENDPOINT
+    ?? loadEnv(mode, process.cwd(), 'VITE_CONTACT_ENDPOINT').VITE_CONTACT_ENDPOINT
+  if (configuredEndpoint?.trim() && !contactEndpoint(configuredEndpoint)) {
+    throw new Error('VITE_CONTACT_ENDPOINT must be a public HTTPS Formspree /f/ form URL without credentials or query parameters.')
+  }
+  return {
   // Only assets imported by this app are shipped. Preserve the old public/
-  // assets on disk without copying unused artwork into the Phase 1 build.
+  // assets on disk without copying unused artwork into the current build.
   publicDir: false,
   plugins: [react()],
   server: {
@@ -18,7 +25,7 @@ export default defineConfig({
   },
   build: {
     // Do not delete the user's existing dist files.
-    outDir: 'dist/phase-1',
+    outDir: 'dist/phase-2',
     emptyOutDir: false,
     rollupOptions: {
       output: {
@@ -28,4 +35,5 @@ export default defineConfig({
       },
     },
   },
+  }
 })

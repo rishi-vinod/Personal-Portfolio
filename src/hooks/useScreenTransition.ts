@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { useReducedMotion } from './useReducedMotion'
 
-export type Screen = 'BOOT' | 'IDENTIFY' | 'GREETING' | 'MENU' | 'PROJECTS' | 'RESUME' | 'ABOUT' | 'CONTACT'
+export type Screen = 'BOOT' | 'IDENTIFY' | 'GREETING' | 'MENU' | 'PROJECTS' | 'RESUME' | 'ABOUT' | 'CONTACT' | 'FAILED_ACCESS' | 'FAILED_PROJECTS'
 
 export function useScreenTransition() {
   const [screen, setScreen] = useState<Screen>('BOOT')

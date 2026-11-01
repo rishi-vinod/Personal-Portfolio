@@ -5,6 +5,10 @@ import { useScreenTransition } from './hooks/useScreenTransition'
 import type { Screen } from './hooks/useScreenTransition'
 import { TerminalMenu } from './components/TerminalMenu'
 import { Typewriter } from './components/Typewriter'
+import { ProjectRecords } from './components/ProjectRecords'
+import { ResumeView } from './components/ResumeView'
+import { ContactForm } from './components/ContactForm'
+import { ClassifiedAccess } from './components/ClassifiedAccess'
 import './App.css'
 
 const bootText = ['Ah, we have a visitor...', 'Please identify yourself as one of the following...']
@@ -82,10 +86,10 @@ function App() {
     </main>
     return <div className="terminal">
       <header className="terminal-header">
-        <span>RV / PERSONAL ARCHIVE</span><span className="dim">TERMINAL 001</span>
+        <span>{view.startsWith('FAILED_') ? 'RV / RESTRICTED ARCHIVE' : 'RV / PERSONAL ARCHIVE'}</span><span className="dim">TERMINAL 001</span>
       </header>
       <main className={`terminal-main view-${view.toLowerCase()}`}>
-        <div className="access-line"><span>DATABASE ACCESS</span><span>// CLEARANCE: {identity.label}</span></div>
+        <div className="access-line"><span>DATABASE ACCESS</span><span>// CLEARANCE: {view.startsWith('FAILED_') ? 'TOP SECRET' : identity.label}</span></div>
         {view === 'IDENTIFY' && <Identify active={active} onIdentify={(value) => {
           setIdentity(value); transitionTo('GREETING')
         }} />}
@@ -108,10 +112,20 @@ function App() {
           <div className="about-copy"><Typewriter paragraphs={aboutParagraphs} active={active} /></div>
           <button className="return-command" onClick={() => transitionTo('MENU')}>[ RETURN TO MENU ]</button>
         </>}
-        {(['PROJECTS', 'RESUME', 'CONTACT'] as Screen[]).includes(view) && <>
-          <p className="section-code">RECORD / {view}</p>
-          <h1 data-screen-focus tabIndex={-1}>{view}</h1>
-          <p className="locked-record">[ RECORD LOCKED ]<span className="cursor" aria-hidden="true" /></p>
+        {view === 'PROJECTS' && <ProjectRecords />}
+        {view === 'RESUME' && <ResumeView />}
+        {view === 'CONTACT' && <ContactForm active={active} />}
+        {view === 'FAILED_ACCESS' && <ClassifiedAccess active={active} onUnlock={() => transitionTo('FAILED_PROJECTS')} />}
+        {view === 'FAILED_PROJECTS' && <>
+          <p className="section-code">TOP SECRET / EXPERIMENTAL ARCHIVE</p>
+          <h1 data-screen-focus tabIndex={-1}>FAILED PROJECTS</h1>
+          <div className="classified-record">
+            <p className="instruction">RECORD 000 / PENDING DECLASSIFICATION</p>
+            <p className="available-soon">AVAILABLE SOON<span className="cursor" aria-hidden="true" /></p>
+            <p className="instruction">NO RECORDS RELEASED.</p>
+          </div>
+        </>}
+        {(['PROJECTS', 'RESUME', 'CONTACT', 'FAILED_ACCESS', 'FAILED_PROJECTS'] as Screen[]).includes(view) && <>
           <button className="return-command" onClick={() => transitionTo('MENU')}>[ RETURN TO MENU ]</button>
         </>}
       </main>

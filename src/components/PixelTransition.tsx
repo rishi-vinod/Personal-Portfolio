@@ -41,7 +41,7 @@ export function PixelTransition({ screen, nextScreen, complete, render }: {
     let columns = 0
     let jitter: number[] = []
     let frame = 0
-    const colors = getComputedStyle(host.current!)
+    const colors = getComputedStyle(newLayer)
     const green = colors.getPropertyValue('--green').trim()
     const dim = colors.getPropertyValue('--dim').trim()
     const background = colors.getPropertyValue('--background').trim()
@@ -109,7 +109,7 @@ export function PixelTransition({ screen, nextScreen, complete, render }: {
 
   return <div ref={host} className="screen-host" aria-busy={busy}>
     {[screen, ...(nextScreen ? [nextScreen] : [])].map((value, index) =>
-      <div key={value} data-layer className={index ? 'screen-layer incoming' : 'screen-layer'}
+      <div key={value} data-layer className={`screen-layer${index ? ' incoming' : ''}${value.startsWith('FAILED_') ? ' classified-layer' : ''}`}
         inert={busy} aria-hidden={busy ? true : undefined}>
         {render(value, !busy)}
       </div>,

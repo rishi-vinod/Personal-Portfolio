@@ -37,6 +37,55 @@
 .about-copy { max-width: 46rem; margin-top: 2rem; font-size: clamp(.88rem, 1.6vw, 1rem); line-height: 1.9; }
 .view-about h1 { text-transform: uppercase; }
 .locked-record { margin-block: 3rem; }
+.project-records { margin-top: 2.5rem; border-top: 1px solid var(--dim); }
+.project-record { border-bottom: 1px solid var(--dim); }
+.project-record summary { display: grid; grid-template-columns: 7rem 1fr 2rem; gap: 1.25rem; align-items: baseline; padding: 1.4rem .4rem; cursor: pointer; list-style: none; }
+.project-record summary::-webkit-details-marker { display: none; }
+.project-record summary:hover { color: var(--background); background: var(--green); }
+.project-record summary:hover .record-number { color: inherit; }
+.record-number { font-size: .7rem; color: var(--dim); white-space: nowrap; }
+.record-title { font-size: 1rem; line-height: 1.6; overflow-wrap: anywhere; }
+.record-toggle { justify-self: end; font-size: .8rem; }
+.record-toggle::after { content: '[+]'; }
+.project-record[open] .record-toggle::after { content: '[-]'; }
+.record-details { max-width: 52rem; padding: .25rem .4rem 1.5rem 8.65rem; }
+.record-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; color: var(--dim); font-size: .7rem; }
+.record-technologies { font-size: .78rem; }
+.record-details ul { margin: 0; padding-left: 1.2rem; font-size: .87rem; }
+.record-details li { margin-bottom: .8rem; padding-left: .4rem; }
+.resume-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .75rem; margin-block: 2rem 1rem; }
+.resume-toolbar button { min-height: 44px; padding: .5rem; font-size: .75rem; border: 1px solid var(--dim); }
+.resume-frame { border: 1px solid var(--dim); overflow: auto; max-height: 76vh; overscroll-behavior: contain; }
+.resume-frame img { display: block; width: 100%; height: auto; max-width: none; }
+.resume-frame.is-zoomed img { width: max(150%, 1050px); }
+.resume-zoom-help { margin-top: .8rem; }
+.restricted-entry { max-width: 47rem; margin-top: 2rem; padding-block: 1rem; border-bottom: 1px solid var(--dim); }
+.restricted-entry h2 { color: var(--dim); font-size: .65rem; font-weight: 400; letter-spacing: .08em; margin-bottom: .5rem; }
+.restricted-entry button { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; min-height: 44px; padding: .7rem .5rem; font-size: .8rem; }
+.classified-layer { --background: #100909; --green: #da8a86; --dim: #ad6a67; color: var(--green); }
+.classified-layer h1 { font-size: clamp(2rem, 5.5vw, 4rem); letter-spacing: -.04em; }
+.classified-subtitle { margin-top: 1rem; font-size: .8rem; letter-spacing: .08em; }
+.access-sequence { margin-top: 3rem; max-width: 31rem; border-block: 1px solid var(--dim); padding-block: 1.5rem; }
+.access-sequence label { display: block; font-size: .7rem; color: var(--dim); margin-bottom: .75rem; }
+.access-sequence input { width: 100%; background: var(--background); border: 1px solid var(--dim); padding: .6rem 1rem; font-size: 1.5rem; letter-spacing: .4em; }
+.access-sequence .instruction { margin-block: 1rem; }
+.access-sequence button { min-height: 44px; padding: .5rem; font-size: .75rem; }
+.classified-record { margin-top: 3rem; padding-block: 2rem; border-block: 1px solid var(--dim); }
+.available-soon { font-size: clamp(1.25rem, 3vw, 2rem); letter-spacing: .05em; margin-block: 2rem; }
+.channel-status { margin-top: 1.5rem; font-size: .75rem; }
+.contact-form { margin-top: 2rem; max-width: 43rem; }
+.contact-form fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.contact-form label { display: block; font-size: .7rem; margin-bottom: .5rem; letter-spacing: .04em; }
+.contact-form input, .contact-form textarea { display: block; width: 100%; color: var(--green); background: var(--background); border: 1px solid var(--dim); padding: .8rem; margin-bottom: 1.5rem; font-size: .9rem; }
+.contact-form textarea { resize: vertical; min-height: 10rem; margin-bottom: .4rem; }
+.contact-form [aria-invalid="true"] { border-color: var(--green); border-width: 2px; }
+.contact-form :disabled { color: var(--dim); cursor: not-allowed; }
+.contact-form .field-error { font-size: .75rem; margin-top: -.9rem; }
+.contact-honeypot { display: none; }
+.message-count { text-align: right; }
+.transmit-command { border: 1px solid var(--dim); min-height: 44px; padding: .6rem 1rem; font-size: .8rem; }
+.delivery-status { min-height: 1.7em; margin-top: 1rem; font-size: .8rem; }
+.contact-privacy { max-width: 34rem; }
 @media (max-width: 480px) {
   .terminal-main { padding-top: 1.5rem; }
   .access-line { font-size: .65rem; margin-bottom: 2.5rem; }
@@ -44,4 +93,10 @@
   .command-group [role="menuitem"] { padding-left: .6rem; }
   .terminal-header, .terminal-footer { font-size: .6rem; gap: .4rem; }
   .database-menu { margin-top: 2rem; }
+  .project-record summary { grid-template-columns: 1fr 2rem; gap: .5rem; padding-block: 1rem; }
+  .record-number { grid-column: 1 / -1; }
+  .record-title { font-size: .88rem; }
+  .record-details { padding-left: .4rem; }
+  .restricted-entry button { font-size: .72rem; }
+  .resume-frame { max-height: 65vh; }
 }
