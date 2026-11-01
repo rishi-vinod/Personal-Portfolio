@@ -18,6 +18,13 @@ dist-ssr
 .env.*
 !.env.example
 *.pdf
+*.docx
+*.pem
+*.key
+private/
+
+# Local browser verification output
+.verification/
 
 # Editor directories and files
 .vscode/*

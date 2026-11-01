@@ -1,0 +1,55 @@
+.contact-hub { margin-top: 30px; min-width: 0; }
+.contact-modes { display: flex; gap: 8px; padding-bottom: 20px; border-bottom: 1px solid #ffffff1a; }
+.contact-modes button { display: inline-flex; align-items: center; gap: 10px; border: 1px solid transparent; border-radius: 6px; padding: 12px 14px; color: #b5b2ab; font: 13px/1.4 var(--sans); }
+.contact-modes button > span { color: var(--orange); font-family: monospace; }
+.contact-modes button[aria-pressed="true"] { color: var(--cream); background: #ffffff08; border-color: #ffffff20; }
+.contact-hub .hub-intro { color: var(--cream); font: 500 20px/1.4 var(--sans); margin: 24px 0 20px; }
+.message-fields { margin: 0; padding: 0; border: 0; min-width: 0; }
+.contact-hub label { display: flex; flex-direction: column; gap: 10px; font-size: 11px; line-height: 1.5; color: #c1bfb8; }
+.contact-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.contact-hub input, .contact-hub textarea { width: 100%; min-width: 0; border: 1px solid #ffffff25; border-radius: 6px; background: #1b1b1a; color: var(--cream); padding: 13px 14px; font: 15px/1.5 var(--sans); transition: border-color .2s, background .2s; }
+.contact-hub input::placeholder, .contact-hub textarea::placeholder { color: #92918b; }
+.contact-hub textarea { resize: vertical; min-height: 130px; max-height: 400px; }
+.contact-hub input:hover, .contact-hub textarea:hover { border-color: #ffffff50; }
+.contact-hub input:focus-visible, .contact-hub textarea:focus-visible { outline-offset: 3px; background: #20201e; }
+.message-meta { display: flex; justify-content: space-between; gap: 16px; margin-top: 10px; color: #a5a29b; font: 11px/1.6 var(--sans); }
+.message-meta > span:last-child { flex-shrink: 0; font-family: monospace; }
+.form-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.contact-submit-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 22px; }
+.contact-submit-row .primary-link { font-size: 14px; padding: 12px 20px; border-radius: 4px; }
+.delivery-note { color: #aaa79f; font: 11px/1.5 var(--sans); max-width: 190px; }
+.contact-hub button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
+.contact-hub button:disabled:hover { background: inherit; }
+.contact-hub .primary-link:disabled:hover { background: var(--cream); }
+.contact-hub .form-notice { padding: 12px 14px; border-left: 2px solid #9b876e; background: #ffffff05; font: 13px/1.6 var(--sans); margin: 16px 0; color: #c4c0b8; }
+.form-notice a { text-decoration: underline; text-underline-offset: 3px; }
+.contact-hub .form-notice.is-error { border-color: #e79f7c; color: #efb898; }
+.contact-hub .form-notice.is-success { border-color: #9fbb8e; color: #becfb2; }
+.contact-hub .faq-explainer { font: 13px/1.7 var(--sans); margin: -9px 0 20px; max-width: 490px; }
+.question-suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-block: 20px 26px; }
+.question-suggestions button { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; padding: 14px; border: 1px solid #ffffff1a; border-radius: 6px; color: #c9c5bd; font: 12px/1.5 var(--sans); background: linear-gradient(135deg, #ffffff06, transparent); }
+.question-suggestions button:hover { border-color: #ff650060; transform: translateY(-2px); }
+.question-suggestions button span { color: var(--orange); }
+.question-form label { margin-bottom: 10px; }
+.question-input-row { display: flex; gap: 10px; }
+.ask-button { flex-shrink: 0; padding: 10px 18px; border: 1px solid #ffffff30; border-radius: 6px; font-size: 12px; }
+.ask-button:hover { background: #ffffff0c; }
+.answer-region { min-height: 16px; }
+.resume-answer { margin-top: 24px; padding: 23px; border: 1px solid #ffffff18; border-radius: 14px 18px 14px 18px; background: radial-gradient(ellipse at top left, #34333066, transparent 85%), #191918; }
+.answer-label { text-transform: uppercase; letter-spacing: .13em; font-size: 9px; color: #c6ac93; }
+.resume-answer h3 { margin-top: 12px; font: 500 20px/1.4 var(--sans); }
+.contact-hub .resume-answer p { font: 14px/1.8 var(--sans); margin-top: 14px; }
+.contact-hub .resume-answer .answered-question { font: 11px/1.5 var(--sans); color: #aaa79f; margin-top: 6px; }
+.resume-answer .text-link { margin-top: 18px; font-size: 12px; padding: 0; color: #e0c0a7; }
+.bot-check { margin-top: 20px; }
+.contact-hub .bot-check p { font: 12px/1.6 var(--sans); }
+@media (max-width: 700px) {
+  .contact-hub { margin-top: 24px; }
+  .contact-modes { gap: 5px; }
+  .contact-modes button { padding: 11px 9px; font-size: 12px; gap: 6px; flex: 1; }
+  .contact-field-row, .question-suggestions { grid-template-columns: 1fr; }
+  .contact-hub input, .contact-hub textarea { font-size: 16px; }
+  .message-meta { font-size: 10px; }
+  .resume-answer { padding: 18px; }
+  .ask-button { padding-inline: 12px; }
+}
